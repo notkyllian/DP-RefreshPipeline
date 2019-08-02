@@ -1,0 +1,26 @@
+language: node_js
+
+services: mongodb
+
+node_js:
+  - "6"
+  - "8"
+  - "10"
+  - "11"
+
+sudo: false
+
+env:
+  - MONGO_CONNECTIONSTRING="mongodb://localhost:27017/starterkit"
+
+cache:
+    directories:
+          - "node_modules"
+script:
+  - npm install --prefix ./backend
+  - npm run lint --prefix ./backend
+  - npm run test:coverage --prefix ./backend
+
+after_script:
+  - "npm install coveralls"
+  - "cat ./backend/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
